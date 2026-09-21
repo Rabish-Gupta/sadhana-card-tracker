@@ -1,0 +1,14 @@
+Alembic migration environment for the Sadhana Card Tracker.
+
+The database URL comes from the same DATABASE_URL setting used by FastAPI.
+For a new database:
+
+    alembic upgrade head
+
+To inspect SQL without a live PostgreSQL server:
+
+    alembic upgrade head --sql
+
+The initial revision enables pgcrypto and citext. Downgrade intentionally leaves
+those database-wide extensions installed so it does not remove extensions that
+may also be used by other schemas/applications.

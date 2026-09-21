@@ -1,0 +1,16 @@
+{
+  "release": "1.0.0-step17",
+  "backend_version": "0.11.2",
+  "frontend_version": "0.4.0",
+  "database_application_tables": 19,
+  "alembic_head": "0003_lifecycle_fields",
+  "backend_openapi_paths": 48,
+  "backend_openapi_canonical_sha256": "c203839352a1afebc6d748042313a891fd3f035003feb650248322912540f85d",
+  "migration_sha256": {
+    "0001_initial_schema.py": "dd53278f59b5f20e584480e0c230379bab8e61f035faf6e377c89f3e07a56eca",
+    "0002_org_setting_versions.py": "5352986d101291fc6916755cd0cf6c4f0f04b30c19c58170a244ad06fda00580",
+    "0003_lifecycle_fields.py": "1fdfb82fb5f82ad4f22e599cf1f91ad11ad486a8e383e673d8dfa4807f261abe"
+  },
+  "frontend_contract_file_sha256": "db9ff38a598e40260852657b0cb6eeadabdb128f2a9d7ed10f412b0735806abd",
+  "business_rules_changed_in_step17": false
+}

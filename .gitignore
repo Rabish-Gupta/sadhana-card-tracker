@@ -1,0 +1,14 @@
+@"
+.env
+.env.local
+.env.production
+backend/.env
+backend/.venv/
+frontend/.env
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+.vercel/
+__pycache__/
+*.pyc
+"@ | Set-Content .gitignore

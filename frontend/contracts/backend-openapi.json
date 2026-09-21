@@ -1,0 +1,6857 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sadhana Card Tracker API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessTokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Logout",
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/registrations/pending": {
+      "get": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Pending Registrations",
+        "operationId": "pending_registrations_api_v1_admin_registrations_pending_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Pending Registrations Api V1 Admin Registrations Pending Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/registrations/{user_id}/approve": {
+      "post": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Approve",
+        "operationId": "approve_api_v1_admin_registrations__user_id__approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/registrations/{user_id}/reject": {
+      "post": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Reject",
+        "operationId": "reject_api_v1_admin_registrations__user_id__reject_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/devotees": {
+      "post": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Admin Create Devotee",
+        "operationId": "admin_create_devotee_api_v1_admin_devotees_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCreateDevoteeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Devotees",
+        "operationId": "devotees_api_v1_admin_devotees_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "account_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AccountStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Account Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserPublic"
+                  },
+                  "title": "Response Devotees Api V1 Admin Devotees Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/devotees/{user_id}/deactivate": {
+      "post": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Deactivate",
+        "operationId": "deactivate_api_v1_admin_devotees__user_id__deactivate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountStatusChangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/devotees/{user_id}/activate": {
+      "post": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Activate",
+        "operationId": "activate_api_v1_admin_devotees__user_id__activate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountStatusChangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/lifecycle/sahadeva-reviews": {
+      "get": {
+        "tags": [
+          "admin-lifecycle"
+        ],
+        "summary": "Sahadeva Reviews",
+        "operationId": "sahadeva_reviews_api_v1_admin_lifecycle_sahadeva_reviews_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include_not_due",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Not Due"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SahadevaReviewItem"
+                  },
+                  "title": "Response Sahadeva Reviews Api V1 Admin Lifecycle Sahadeva Reviews Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/lifecycle/devotees/{user_id}/sahadeva-review": {
+      "post": {
+        "tags": [
+          "admin-lifecycle"
+        ],
+        "summary": "Sahadeva Review",
+        "operationId": "sahadeva_review_api_v1_admin_lifecycle_devotees__user_id__sahadeva_review_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SahadevaReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SahadevaReviewResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/lifecycle/run-now": {
+      "post": {
+        "tags": [
+          "admin-lifecycle"
+        ],
+        "summary": "Run Lifecycle Now",
+        "description": "Admin diagnostic/manual retry. Production automation uses APScheduler.",
+        "operationId": "run_lifecycle_now_api_v1_admin_lifecycle_run_now_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Run Lifecycle Now Api V1 Admin Lifecycle Run Now Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/config/categories": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Categories",
+        "operationId": "categories_api_v1_admin_config_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Categories Api V1 Admin Config Categories Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/config/organization-settings/current": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Current Organization Settings",
+        "operationId": "current_organization_settings_api_v1_admin_config_organization_settings_current_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSettingVersionPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/config/organization-settings/versions": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Organization Setting Versions",
+        "operationId": "organization_setting_versions_api_v1_admin_config_organization_settings_versions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationSettingVersionPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Organization Setting Versions Api V1 Admin Config Organization Settings Versions Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Organization Setting Version",
+        "operationId": "add_organization_setting_version_api_v1_admin_config_organization_settings_versions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationSettingVersionCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSettingVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/config/organization-setting-versions/{version_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Organization Setting Version",
+        "operationId": "edit_organization_setting_version_api_v1_admin_config_organization_setting_versions__version_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationSettingVersionUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSettingVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activities": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Activities",
+        "operationId": "activities_api_v1_admin_config_activities_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Archived"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActivityPublic"
+                  },
+                  "title": "Response Activities Api V1 Admin Config Activities Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Activity",
+        "operationId": "add_activity_api_v1_admin_config_activities_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activities/{activity_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Activity",
+        "operationId": "edit_activity_api_v1_admin_config_activities__activity_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "activity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activities/{activity_id}/archive": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Archive Activity Route",
+        "operationId": "archive_activity_route_api_v1_admin_config_activities__activity_id__archive_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "activity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArchiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activities/{activity_id}/fields": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Activity Field",
+        "operationId": "add_activity_field_api_v1_admin_config_activities__activity_id__fields_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "activity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityFieldCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityFieldPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activity-fields/{field_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Activity Field",
+        "operationId": "edit_activity_field_api_v1_admin_config_activity_fields__field_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Field Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityFieldUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityFieldPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activity-fields/{field_id}/archive": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Archive Field",
+        "operationId": "archive_field_api_v1_admin_config_activity_fields__field_id__archive_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "field_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Field Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArchiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityFieldPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/scoring-rules": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Scoring Rules",
+        "operationId": "scoring_rules_api_v1_admin_config_scoring_rules_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "activity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScoringRulePublic"
+                  },
+                  "title": "Response Scoring Rules Api V1 Admin Config Scoring Rules Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Scoring Rule",
+        "operationId": "add_scoring_rule_api_v1_admin_config_scoring_rules_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScoringRuleCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringRulePublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/scoring-rules/{rule_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Scoring Rule",
+        "operationId": "edit_scoring_rule_api_v1_admin_config_scoring_rules__rule_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScoringRuleUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringRulePublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/scoring-rules/{rule_id}/archive": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Archive Rule",
+        "operationId": "archive_rule_api_v1_admin_config_scoring_rules__rule_id__archive_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArchiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringRulePublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/scoring-rules/{rule_id}/versions": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Scoring Rule Versions",
+        "operationId": "scoring_rule_versions_api_v1_admin_config_scoring_rules__rule_id__versions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScoringRuleVersionPublic"
+                  },
+                  "title": "Response Scoring Rule Versions Api V1 Admin Config Scoring Rules  Rule Id  Versions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Scoring Rule Version",
+        "operationId": "add_scoring_rule_version_api_v1_admin_config_scoring_rules__rule_id__versions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScoringRuleVersionCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringRuleVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/scoring-rule-versions/{version_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Scoring Rule Version",
+        "operationId": "edit_scoring_rule_version_api_v1_admin_config_scoring_rule_versions__version_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScoringRuleVersionUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringRuleVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/standards": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Standards",
+        "operationId": "standards_api_v1_admin_config_standards_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "activity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StandardPublic"
+                  },
+                  "title": "Response Standards Api V1 Admin Config Standards Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Standard",
+        "operationId": "add_standard_api_v1_admin_config_standards_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/standards/{standard_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Standard",
+        "operationId": "edit_standard_api_v1_admin_config_standards__standard_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "standard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Standard Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/standards/{standard_id}/archive": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Archive Standard Route",
+        "operationId": "archive_standard_route_api_v1_admin_config_standards__standard_id__archive_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "standard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Standard Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArchiveRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/standards/{standard_id}/versions": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Standard Versions",
+        "operationId": "standard_versions_api_v1_admin_config_standards__standard_id__versions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "standard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Standard Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StandardVersionPublic"
+                  },
+                  "title": "Response Standard Versions Api V1 Admin Config Standards  Standard Id  Versions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Standard Version",
+        "operationId": "add_standard_version_api_v1_admin_config_standards__standard_id__versions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "standard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Standard Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardVersionCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/standard-versions/{version_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Standard Version",
+        "operationId": "edit_standard_version_api_v1_admin_config_standard_versions__version_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StandardVersionUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardVersionPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/category-activity-configs": {
+      "get": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Category Activity Configs",
+        "operationId": "category_activity_configs_api_v1_admin_config_category_activity_configs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "category_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category Id"
+            }
+          },
+          {
+            "name": "activity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Activity Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryActivityConfigPublic"
+                  },
+                  "title": "Response Category Activity Configs Api V1 Admin Config Category Activity Configs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Add Category Activity Config",
+        "operationId": "add_category_activity_config_api_v1_admin_config_category_activity_configs_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryActivityConfigCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryActivityConfigPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/category-activity-configs/{config_id}": {
+      "patch": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Edit Category Activity Config",
+        "operationId": "edit_category_activity_config_api_v1_admin_config_category_activity_configs__config_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "config_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Config Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryActivityConfigUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryActivityConfigPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/config/activate-due": {
+      "post": {
+        "tags": [
+          "admin-configuration"
+        ],
+        "summary": "Activate Due",
+        "description": "Activate due pending versions at the organization week boundary.\n\nThis endpoint is intentionally Admin-only in Step 7. The later scheduler phase will\ncall the same service logic under a PostgreSQL-backed job lock.",
+        "operationId": "activate_due_api_v1_admin_config_activate_due_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivationResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/corrections/devotees/{user_id}/cards/{card_date}": {
+      "get": {
+        "tags": [
+          "admin-corrections"
+        ],
+        "summary": "Admin Get Historical Card",
+        "operationId": "admin_get_historical_card_api_v1_admin_corrections_devotees__user_id__cards__card_date__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "card_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Card Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyCardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "admin-corrections"
+        ],
+        "summary": "Admin Correct Historical Card",
+        "operationId": "admin_correct_historical_card_api_v1_admin_corrections_devotees__user_id__cards__card_date__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "card_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Card Date"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricalCardCorrectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalCardCorrectionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/corrections/devotees/{user_id}/category-history": {
+      "get": {
+        "tags": [
+          "admin-corrections"
+        ],
+        "summary": "Admin Get Category History",
+        "operationId": "admin_get_category_history_api_v1_admin_corrections_devotees__user_id__category_history_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalCategoryHistoryPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/corrections/devotees/{user_id}/category": {
+      "patch": {
+        "tags": [
+          "admin-corrections"
+        ],
+        "summary": "Admin Correct Historical Category",
+        "operationId": "admin_correct_historical_category_api_v1_admin_corrections_devotees__user_id__category_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricalCategoryCorrectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalCategoryCorrectionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cards/today": {
+      "get": {
+        "tags": [
+          "daily-cards"
+        ],
+        "summary": "Today Card",
+        "operationId": "today_card_api_v1_cards_today_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyCardPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "daily-cards"
+        ],
+        "summary": "Update Today Card",
+        "operationId": "update_today_card_api_v1_cards_today_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DailyCardUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyCardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cards/{card_date}": {
+      "get": {
+        "tags": [
+          "daily-cards"
+        ],
+        "summary": "Dated Card",
+        "operationId": "dated_card_api_v1_cards__card_date__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "card_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Card Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyCardPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lifecycle/status": {
+      "get": {
+        "tags": [
+          "devotee-lifecycle"
+        ],
+        "summary": "Lifecycle Status",
+        "operationId": "lifecycle_status_api_v1_lifecycle_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifecycleStatusPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/lifecycle/bhima-status": {
+      "post": {
+        "tags": [
+          "devotee-lifecycle"
+        ],
+        "summary": "Change Bhima Status",
+        "operationId": "change_bhima_status_api_v1_lifecycle_bhima_status_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BhimaStatusChangeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifecycleStatusPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/weekly/latest": {
+      "get": {
+        "tags": [
+          "weekly-evaluations"
+        ],
+        "summary": "Latest Weekly Evaluation",
+        "operationId": "latest_weekly_evaluation_api_v1_weekly_latest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyEvaluationPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/weekly/{week_start_date}": {
+      "get": {
+        "tags": [
+          "weekly-evaluations"
+        ],
+        "summary": "Weekly Evaluation",
+        "operationId": "weekly_evaluation_api_v1_weekly__week_start_date__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "week_start_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Week Start Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyEvaluationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/monthly/latest": {
+      "get": {
+        "tags": [
+          "monthly-reports"
+        ],
+        "summary": "Latest Monthly Report",
+        "operationId": "latest_monthly_report_api_v1_monthly_latest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FourWeekReportPublic"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/monthly/{period_start_date}": {
+      "get": {
+        "tags": [
+          "monthly-reports"
+        ],
+        "summary": "Monthly Report",
+        "operationId": "monthly_report_api_v1_monthly__period_start_date__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "period_start_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Period Start Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FourWeekReportPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccessTokenResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "expires_in"
+        ],
+        "title": "AccessTokenResponse"
+      },
+      "AccountStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "ACTIVE",
+          "INACTIVE",
+          "REJECTED"
+        ],
+        "title": "AccountStatus"
+      },
+      "AccountStatusChangeRequest": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "AccountStatusChangeRequest"
+      },
+      "ActivationResult": {
+        "properties": {
+          "effective_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective Week"
+          },
+          "scoring_rule_versions_activated": {
+            "type": "integer",
+            "title": "Scoring Rule Versions Activated"
+          },
+          "standard_versions_activated": {
+            "type": "integer",
+            "title": "Standard Versions Activated"
+          },
+          "category_configs_activated": {
+            "type": "integer",
+            "title": "Category Configs Activated"
+          },
+          "organization_setting_versions_activated": {
+            "type": "integer",
+            "title": "Organization Setting Versions Activated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "effective_week",
+          "scoring_rule_versions_activated",
+          "standard_versions_activated",
+          "category_configs_activated",
+          "organization_setting_versions_activated"
+        ],
+        "title": "ActivationResult"
+      },
+      "ActivityCategory": {
+        "type": "string",
+        "enum": [
+          "SADHANA",
+          "ACADEMIC"
+        ],
+        "title": "ActivityCategory"
+      },
+      "ActivityCreateRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 2,
+            "pattern": "^[A-Z0-9_]+$",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Name"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ActivityCategory"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "is_system_derived": {
+            "type": "boolean",
+            "title": "Is System Derived",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "category"
+        ],
+        "title": "ActivityCreateRequest"
+      },
+      "ActivityFieldCreateRequest": {
+        "properties": {
+          "field_key": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Field Key"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "input_type": {
+            "$ref": "#/components/schemas/ActivityInputType"
+          },
+          "unit_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 30
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Code"
+          },
+          "display_order": {
+            "type": "integer",
+            "maximum": 32767.0,
+            "minimum": 0.0,
+            "title": "Display Order",
+            "default": 0
+          },
+          "required_for_completion": {
+            "type": "boolean",
+            "title": "Required For Completion",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_key",
+          "label",
+          "input_type"
+        ],
+        "title": "ActivityFieldCreateRequest"
+      },
+      "ActivityFieldPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "field_key": {
+            "type": "string",
+            "title": "Field Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "input_type": {
+            "$ref": "#/components/schemas/ActivityInputType"
+          },
+          "unit_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Code"
+          },
+          "display_order": {
+            "type": "integer",
+            "title": "Display Order"
+          },
+          "required_for_completion": {
+            "type": "boolean",
+            "title": "Required For Completion"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_archived": {
+            "type": "boolean",
+            "title": "Is Archived"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "field_key",
+          "label",
+          "input_type",
+          "unit_code",
+          "display_order",
+          "required_for_completion",
+          "is_active",
+          "is_archived"
+        ],
+        "title": "ActivityFieldPublic"
+      },
+      "ActivityFieldUpdateRequest": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 150,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "display_order": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 32767.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Order"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ActivityFieldUpdateRequest"
+      },
+      "ActivityInputType": {
+        "type": "string",
+        "enum": [
+          "NUMBER",
+          "COUNT",
+          "DURATION",
+          "TIME",
+          "BOOLEAN",
+          "TEXT",
+          "SELECTION"
+        ],
+        "title": "ActivityInputType"
+      },
+      "ActivityPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ActivityCategory"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "is_system_derived": {
+            "type": "boolean",
+            "title": "Is System Derived"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_archived": {
+            "type": "boolean",
+            "title": "Is Archived"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityFieldPublic"
+            },
+            "type": "array",
+            "title": "Fields",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "name",
+          "category",
+          "description",
+          "is_system_derived",
+          "is_active",
+          "is_archived"
+        ],
+        "title": "ActivityPublic"
+      },
+      "ActivityUpdateRequest": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 150,
+                "minLength": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "title": "ActivityUpdateRequest"
+      },
+      "AdminCreateDevoteeRequest": {
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Full Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          },
+          "phone_number": {
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 7,
+            "title": "Phone Number"
+          },
+          "college": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "College"
+          },
+          "branch": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 2,
+            "title": "Branch"
+          },
+          "college_joining_year": {
+            "type": "integer",
+            "maximum": 2100.0,
+            "minimum": 2000.0,
+            "title": "College Joining Year"
+          },
+          "category_code": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Category Code"
+          },
+          "current_academic_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 4.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Academic Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "full_name",
+          "email",
+          "password",
+          "phone_number",
+          "college",
+          "branch",
+          "college_joining_year",
+          "category_code"
+        ],
+        "title": "AdminCreateDevoteeRequest"
+      },
+      "AggregationMethod": {
+        "type": "string",
+        "enum": [
+          "SUM",
+          "AVERAGE",
+          "COUNT",
+          "MIN",
+          "MAX"
+        ],
+        "title": "AggregationMethod"
+      },
+      "ArchiveRequest": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "ArchiveRequest"
+      },
+      "BhimaStatusChangeRequest": {
+        "properties": {
+          "employment_status": {
+            "$ref": "#/components/schemas/EmploymentStatus"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason",
+            "default": "Devotee updated Bhima employment status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "employment_status"
+        ],
+        "title": "BhimaStatusChangeRequest"
+      },
+      "CardStatus": {
+        "type": "string",
+        "enum": [
+          "IN_PROGRESS",
+          "FINALIZED"
+        ],
+        "title": "CardStatus"
+      },
+      "CategoryActivityConfigCreateRequest": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Category Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "is_applicable": {
+            "type": "boolean",
+            "title": "Is Applicable",
+            "default": true
+          },
+          "scoring_type": {
+            "$ref": "#/components/schemas/ScoringType"
+          },
+          "weekly_aggregation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AggregationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scoring_rule_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scoring Rule Id"
+          },
+          "standard_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Id"
+          },
+          "counts_toward_card_fill": {
+            "type": "boolean",
+            "title": "Counts Toward Card Fill",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "category_id",
+          "activity_id",
+          "scoring_type"
+        ],
+        "title": "CategoryActivityConfigCreateRequest"
+      },
+      "CategoryActivityConfigPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Organization Id"
+          },
+          "category_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Category Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "is_applicable": {
+            "type": "boolean",
+            "title": "Is Applicable"
+          },
+          "scoring_type": {
+            "$ref": "#/components/schemas/ScoringType"
+          },
+          "weekly_aggregation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AggregationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scoring_rule_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scoring Rule Id"
+          },
+          "standard_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Id"
+          },
+          "counts_toward_card_fill": {
+            "type": "boolean",
+            "title": "Counts Toward Card Fill"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VersionStatus"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "organization_id",
+          "category_id",
+          "activity_id",
+          "version_number",
+          "effective_from_week",
+          "is_applicable",
+          "scoring_type",
+          "weekly_aggregation",
+          "scoring_rule_id",
+          "standard_id",
+          "counts_toward_card_fill",
+          "status",
+          "created_by_id",
+          "created_at"
+        ],
+        "title": "CategoryActivityConfigPublic"
+      },
+      "CategoryActivityConfigUpdateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "is_applicable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Applicable"
+          },
+          "scoring_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScoringType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "weekly_aggregation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AggregationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scoring_rule_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scoring Rule Id"
+          },
+          "standard_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Id"
+          },
+          "counts_toward_card_fill": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counts Toward Card Fill"
+          }
+        },
+        "type": "object",
+        "title": "CategoryActivityConfigUpdateRequest"
+      },
+      "CategoryHistoryEntryPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "previous_category_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Category Code"
+          },
+          "new_category_code": {
+            "type": "string",
+            "title": "New Category Code"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "change_source": {
+            "type": "string",
+            "title": "Change Source"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "changed_by_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changed By Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "previous_category_code",
+          "new_category_code",
+          "effective_from_week",
+          "change_source",
+          "reason"
+        ],
+        "title": "CategoryHistoryEntryPublic"
+      },
+      "CategoryPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Year"
+          },
+          "stage_order": {
+            "type": "integer",
+            "title": "Stage Order"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_archived": {
+            "type": "boolean",
+            "title": "Is Archived"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "display_name",
+          "academic_year",
+          "stage_order",
+          "is_active",
+          "is_archived"
+        ],
+        "title": "CategoryPublic"
+      },
+      "CategorySummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "display_name",
+          "academic_year"
+        ],
+        "title": "CategorySummary"
+      },
+      "ChangeSource": {
+        "type": "string",
+        "enum": [
+          "SYSTEM",
+          "ADMIN",
+          "DEVOTEE"
+        ],
+        "title": "ChangeSource"
+      },
+      "DailyActivityPublic": {
+        "properties": {
+          "entry_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Entry Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ActivityCategory"
+          },
+          "scoring_type": {
+            "$ref": "#/components/schemas/ScoringType"
+          },
+          "weekly_aggregation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AggregationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_system_derived": {
+            "type": "boolean",
+            "title": "Is System Derived"
+          },
+          "counts_toward_card_fill": {
+            "type": "boolean",
+            "title": "Counts Toward Card Fill"
+          },
+          "is_filled": {
+            "type": "boolean",
+            "title": "Is Filled"
+          },
+          "daily_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Score"
+          },
+          "max_score_snapshot": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Score Snapshot"
+          },
+          "score_calculated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Calculated At"
+          },
+          "score_details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Details"
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/DailyActivityValuePublic"
+            },
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entry_id",
+          "activity_id",
+          "code",
+          "name",
+          "category",
+          "scoring_type",
+          "weekly_aggregation",
+          "is_system_derived",
+          "counts_toward_card_fill",
+          "is_filled",
+          "daily_score",
+          "max_score_snapshot",
+          "score_calculated_at",
+          "score_details",
+          "values"
+        ],
+        "title": "DailyActivityPublic"
+      },
+      "DailyActivityUpdate": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/DailyActivityValueUpdate"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "values"
+        ],
+        "title": "DailyActivityUpdate"
+      },
+      "DailyActivityValuePublic": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Field Id"
+          },
+          "field_key": {
+            "type": "string",
+            "title": "Field Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "input_type": {
+            "$ref": "#/components/schemas/ActivityInputType"
+          },
+          "unit_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Code"
+          },
+          "display_order": {
+            "type": "integer",
+            "title": "Display Order"
+          },
+          "required_for_completion": {
+            "type": "boolean",
+            "title": "Required For Completion"
+          },
+          "is_filled": {
+            "type": "boolean",
+            "title": "Is Filled"
+          },
+          "numeric_value": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Numeric Value"
+          },
+          "time_value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Value"
+          },
+          "boolean_value": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boolean Value"
+          },
+          "text_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id",
+          "field_key",
+          "label",
+          "input_type",
+          "unit_code",
+          "display_order",
+          "required_for_completion",
+          "is_filled",
+          "numeric_value",
+          "time_value",
+          "boolean_value",
+          "text_value"
+        ],
+        "title": "DailyActivityValuePublic"
+      },
+      "DailyActivityValueUpdate": {
+        "properties": {
+          "field_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Field Id"
+          },
+          "is_filled": {
+            "type": "boolean",
+            "title": "Is Filled",
+            "default": true
+          },
+          "numeric_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Numeric Value"
+          },
+          "time_value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Value"
+          },
+          "boolean_value": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boolean Value"
+          },
+          "text_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field_id"
+        ],
+        "title": "DailyActivityValueUpdate"
+      },
+      "DailyCardPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "card_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Card Date"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CardStatus"
+          },
+          "editable": {
+            "type": "boolean",
+            "title": "Editable"
+          },
+          "category_code": {
+            "type": "string",
+            "title": "Category Code"
+          },
+          "category_name": {
+            "type": "string",
+            "title": "Category Name"
+          },
+          "first_update_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Update At"
+          },
+          "last_update_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Update At"
+          },
+          "finalized_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finalized At"
+          },
+          "timezone_snapshot": {
+            "type": "string",
+            "title": "Timezone Snapshot"
+          },
+          "deadline_time_snapshot": {
+            "type": "string",
+            "format": "time",
+            "title": "Deadline Time Snapshot"
+          },
+          "deadline_at_utc": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Deadline At Utc"
+          },
+          "revision_number": {
+            "type": "integer",
+            "title": "Revision Number"
+          },
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/DailyActivityPublic"
+            },
+            "type": "array",
+            "title": "Activities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "card_date",
+          "status",
+          "editable",
+          "category_code",
+          "category_name",
+          "first_update_at",
+          "last_update_at",
+          "finalized_at",
+          "timezone_snapshot",
+          "deadline_time_snapshot",
+          "deadline_at_utc",
+          "revision_number",
+          "activities"
+        ],
+        "title": "DailyCardPublic"
+      },
+      "DailyCardUpdateRequest": {
+        "properties": {
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/DailyActivityUpdate"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Activities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activities"
+        ],
+        "title": "DailyCardUpdateRequest"
+      },
+      "DevoteeProfilePublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "college": {
+            "type": "string",
+            "title": "College"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "college_joining_year": {
+            "type": "integer",
+            "title": "College Joining Year"
+          },
+          "expected_graduation_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Graduation Year"
+          },
+          "current_academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Academic Year"
+          },
+          "current_category": {
+            "$ref": "#/components/schemas/CategorySummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "college",
+          "branch",
+          "college_joining_year",
+          "expected_graduation_year",
+          "current_academic_year",
+          "current_category"
+        ],
+        "title": "DevoteeProfilePublic"
+      },
+      "EmploymentStatus": {
+        "type": "string",
+        "enum": [
+          "WORKING",
+          "NOT_WORKING"
+        ],
+        "title": "EmploymentStatus"
+      },
+      "FourWeekActivityPublic": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ActivityCategory"
+          },
+          "scoring_types_seen": {
+            "items": {
+              "$ref": "#/components/schemas/ScoringType"
+            },
+            "type": "array",
+            "title": "Scoring Types Seen"
+          },
+          "final_score_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Score Total"
+          },
+          "maximum_score_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Score Total"
+          },
+          "score_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Percentage"
+          },
+          "raw_total_sum": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Total Sum"
+          },
+          "weekly_raw_totals": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Weekly Raw Totals"
+          },
+          "weekly_final_scores": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Weekly Final Scores"
+          },
+          "weekly_maximum_scores": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Weekly Maximum Scores"
+          },
+          "weekly_results": {
+            "items": {
+              "$ref": "#/components/schemas/FourWeekActivityWeekPublic"
+            },
+            "type": "array",
+            "title": "Weekly Results"
+          },
+          "standard_achievement_average": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Achievement Average"
+          },
+          "standard_periods_seen": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Standard Periods Seen"
+          },
+          "daily_standard_achieved_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Standard Achieved Days"
+          },
+          "daily_standard_evaluated_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Standard Evaluated Days"
+          },
+          "weekly_standard_met_weeks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekly Standard Met Weeks"
+          },
+          "weekly_standard_evaluated_weeks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekly Standard Evaluated Weeks"
+          },
+          "previous_period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviousFourWeekActivityPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "code",
+          "name",
+          "category"
+        ],
+        "title": "FourWeekActivityPublic"
+      },
+      "FourWeekActivityWeekPublic": {
+        "properties": {
+          "week_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week Start Date"
+          },
+          "week_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week End Date"
+          },
+          "raw_total": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Total"
+          },
+          "final_activity_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Activity Score"
+          },
+          "maximum_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Score"
+          },
+          "standard_achievement": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Achievement"
+          },
+          "category_activity_config_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Category Activity Config Id"
+          },
+          "rule_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Version Id"
+          },
+          "standard_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Version Id"
+          },
+          "standard_snapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Snapshot"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_start_date",
+          "week_end_date",
+          "category_activity_config_id"
+        ],
+        "title": "FourWeekActivityWeekPublic"
+      },
+      "FourWeekReportPublic": {
+        "properties": {
+          "period_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period Start Date"
+          },
+          "period_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period End Date"
+          },
+          "weeks_count": {
+            "type": "integer",
+            "title": "Weeks Count"
+          },
+          "definition": {
+            "type": "string",
+            "title": "Definition",
+            "default": "FOUR_ADJACENT_COMPLETE_WEEKS"
+          },
+          "weeks": {
+            "items": {
+              "$ref": "#/components/schemas/FourWeekWeekPublic"
+            },
+            "type": "array",
+            "title": "Weeks"
+          },
+          "sadhana": {
+            "$ref": "#/components/schemas/FourWeekScoreSummaryPublic"
+          },
+          "academic": {
+            "$ref": "#/components/schemas/FourWeekScoreSummaryPublic"
+          },
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/FourWeekActivityPublic"
+            },
+            "type": "array",
+            "title": "Activities"
+          },
+          "previous_period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviousFourWeekSummaryPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "observations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Observations"
+          },
+          "metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period_start_date",
+          "period_end_date",
+          "weeks_count",
+          "sadhana",
+          "academic"
+        ],
+        "title": "FourWeekReportPublic",
+        "description": "Project 'monthly' report: exactly four adjacent complete organization weeks."
+      },
+      "FourWeekScoreSummaryPublic": {
+        "properties": {
+          "score": {
+            "type": "integer",
+            "title": "Score"
+          },
+          "maximum_score": {
+            "type": "integer",
+            "title": "Maximum Score"
+          },
+          "percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percentage"
+          },
+          "trend": {
+            "$ref": "#/components/schemas/FourWeekTrendPublic"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "maximum_score",
+          "trend"
+        ],
+        "title": "FourWeekScoreSummaryPublic"
+      },
+      "FourWeekTrendPublic": {
+        "properties": {
+          "first_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Percentage"
+          },
+          "last_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Percentage"
+          },
+          "change_percentage_points": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Percentage Points"
+          },
+          "average_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Percentage"
+          },
+          "minimum_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum Percentage"
+          },
+          "maximum_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Percentage"
+          },
+          "range_percentage_points": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Range Percentage Points"
+          }
+        },
+        "type": "object",
+        "title": "FourWeekTrendPublic"
+      },
+      "FourWeekWeekPublic": {
+        "properties": {
+          "week_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week Start Date"
+          },
+          "week_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week End Date"
+          },
+          "category_code": {
+            "type": "string",
+            "title": "Category Code"
+          },
+          "category_name": {
+            "type": "string",
+            "title": "Category Name"
+          },
+          "sadhana_score": {
+            "type": "integer",
+            "title": "Sadhana Score"
+          },
+          "sadhana_max_score": {
+            "type": "integer",
+            "title": "Sadhana Max Score"
+          },
+          "sadhana_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sadhana Percentage"
+          },
+          "academic_score": {
+            "type": "integer",
+            "title": "Academic Score"
+          },
+          "academic_max_score": {
+            "type": "integer",
+            "title": "Academic Max Score"
+          },
+          "academic_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Percentage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_start_date",
+          "week_end_date",
+          "category_code",
+          "category_name",
+          "sadhana_score",
+          "sadhana_max_score",
+          "academic_score",
+          "academic_max_score"
+        ],
+        "title": "FourWeekWeekPublic"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistoricalCardCorrectionRequest": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          },
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/DailyActivityUpdate"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Activities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "activities"
+        ],
+        "title": "HistoricalCardCorrectionRequest",
+        "description": "Admin-only correction of raw values on an already-finalized card.\n\nThe request intentionally reuses the typed DailyActivityUpdate contract so missing\nversus intentional zero/False semantics remain identical to normal devotee updates."
+      },
+      "HistoricalCardCorrectionResult": {
+        "properties": {
+          "devotee_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Devotee User Id"
+          },
+          "card_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Card Date"
+          },
+          "card": {
+            "$ref": "#/components/schemas/DailyCardPublic"
+          },
+          "weekly_evaluation_recalculated": {
+            "type": "boolean",
+            "title": "Weekly Evaluation Recalculated"
+          },
+          "weekly_evaluation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WeeklyEvaluationPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "devotee_user_id",
+          "card_date",
+          "card",
+          "weekly_evaluation_recalculated"
+        ],
+        "title": "HistoricalCardCorrectionResult"
+      },
+      "HistoricalCategoryCorrectionRequest": {
+        "properties": {
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "target_category_code": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Target Category Code"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "effective_from_week",
+          "target_category_code",
+          "reason"
+        ],
+        "title": "HistoricalCategoryCorrectionRequest",
+        "description": "Correct a category transition from one week forward until the next transition.\n\nApproved policy B: the corrected category is effective from ``effective_from_week``\nand remains effective until the next actual category transition.  If a recorded next\ntransition becomes redundant because it transitions to the same corrected category,\nthat no-op history row is removed and the correction naturally continues until the\nnext different transition."
+      },
+      "HistoricalCategoryCorrectionResult": {
+        "properties": {
+          "devotee_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Devotee User Id"
+          },
+          "correction_batch_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Correction Batch Id"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "effective_until_exclusive": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Until Exclusive"
+          },
+          "previous_category_code": {
+            "type": "string",
+            "title": "Previous Category Code"
+          },
+          "corrected_category_code": {
+            "type": "string",
+            "title": "Corrected Category Code"
+          },
+          "next_transition_category_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Transition Category Code"
+          },
+          "history_rows_removed_as_redundant": {
+            "type": "integer",
+            "title": "History Rows Removed As Redundant"
+          },
+          "affected_daily_cards": {
+            "type": "integer",
+            "title": "Affected Daily Cards"
+          },
+          "affected_weekly_evaluations": {
+            "type": "integer",
+            "title": "Affected Weekly Evaluations"
+          },
+          "current_profile_updated": {
+            "type": "boolean",
+            "title": "Current Profile Updated"
+          },
+          "current_category_code": {
+            "type": "string",
+            "title": "Current Category Code"
+          },
+          "current_academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Academic Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "devotee_user_id",
+          "correction_batch_id",
+          "effective_from_week",
+          "previous_category_code",
+          "corrected_category_code",
+          "history_rows_removed_as_redundant",
+          "affected_daily_cards",
+          "affected_weekly_evaluations",
+          "current_profile_updated",
+          "current_category_code",
+          "current_academic_year"
+        ],
+        "title": "HistoricalCategoryCorrectionResult"
+      },
+      "HistoricalCategoryHistoryPublic": {
+        "properties": {
+          "devotee_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Devotee User Id"
+          },
+          "current_category_code": {
+            "type": "string",
+            "title": "Current Category Code"
+          },
+          "current_academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Academic Year"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryHistoryEntryPublic"
+            },
+            "type": "array",
+            "title": "History"
+          }
+        },
+        "type": "object",
+        "required": [
+          "devotee_user_id",
+          "current_category_code",
+          "current_academic_year",
+          "history"
+        ],
+        "title": "HistoricalCategoryHistoryPublic"
+      },
+      "LifecycleStatusPublic": {
+        "properties": {
+          "current_category_code": {
+            "type": "string",
+            "title": "Current Category Code"
+          },
+          "current_category_name": {
+            "type": "string",
+            "title": "Current Category Name"
+          },
+          "current_academic_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Academic Year"
+          },
+          "next_promotion_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Promotion Week"
+          },
+          "sahadeva_review_due": {
+            "type": "boolean",
+            "title": "Sahadeva Review Due"
+          },
+          "bhima_choice_required": {
+            "type": "boolean",
+            "title": "Bhima Choice Required"
+          },
+          "pending_category_transition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PendingCategoryTransitionPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pending_deactivation_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Deactivation Week"
+          },
+          "pending_deactivation_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Deactivation Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_category_code",
+          "current_category_name",
+          "current_academic_year",
+          "next_promotion_week",
+          "sahadeva_review_due",
+          "bhima_choice_required",
+          "pending_category_transition",
+          "pending_deactivation_week",
+          "pending_deactivation_reason"
+        ],
+        "title": "LifecycleStatusPublic"
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "LogoutResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "LogoutResponse"
+      },
+      "OrganizationSettingVersionCreateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timezone"
+          },
+          "week_start_day": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 6.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Week Start Day"
+          },
+          "daily_finalize_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Finalize Time"
+          },
+          "promotion_month": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 12.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Promotion Month"
+          }
+        },
+        "type": "object",
+        "title": "OrganizationSettingVersionCreateRequest"
+      },
+      "OrganizationSettingVersionPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Organization Id"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VersionStatus"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
+          },
+          "week_start_day": {
+            "type": "integer",
+            "title": "Week Start Day"
+          },
+          "daily_finalize_time": {
+            "type": "string",
+            "format": "time",
+            "title": "Daily Finalize Time"
+          },
+          "promotion_month": {
+            "type": "integer",
+            "title": "Promotion Month"
+          },
+          "created_by_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "organization_id",
+          "version_number",
+          "effective_from_week",
+          "status",
+          "timezone",
+          "week_start_day",
+          "daily_finalize_time",
+          "promotion_month",
+          "created_by_id",
+          "created_at"
+        ],
+        "title": "OrganizationSettingVersionPublic"
+      },
+      "OrganizationSettingVersionUpdateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timezone"
+          },
+          "week_start_day": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 6.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Week Start Day"
+          },
+          "daily_finalize_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Finalize Time"
+          },
+          "promotion_month": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 12.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Promotion Month"
+          }
+        },
+        "type": "object",
+        "title": "OrganizationSettingVersionUpdateRequest"
+      },
+      "PendingCategoryTransitionPublic": {
+        "properties": {
+          "history_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "History Id"
+          },
+          "target_category_code": {
+            "type": "string",
+            "title": "Target Category Code"
+          },
+          "target_category_name": {
+            "type": "string",
+            "title": "Target Category Name"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "change_source": {
+            "$ref": "#/components/schemas/ChangeSource"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "history_id",
+          "target_category_code",
+          "target_category_name",
+          "effective_from_week",
+          "change_source",
+          "reason"
+        ],
+        "title": "PendingCategoryTransitionPublic"
+      },
+      "PreviousFourWeekActivityPublic": {
+        "properties": {
+          "period_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period Start Date"
+          },
+          "period_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period End Date"
+          },
+          "final_score_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Score Total"
+          },
+          "maximum_score_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Score Total"
+          },
+          "score_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Percentage"
+          },
+          "raw_total_sum": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Total Sum"
+          },
+          "standard_achievement_average": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Achievement Average"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period_start_date",
+          "period_end_date"
+        ],
+        "title": "PreviousFourWeekActivityPublic"
+      },
+      "PreviousFourWeekSummaryPublic": {
+        "properties": {
+          "period_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period Start Date"
+          },
+          "period_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Period End Date"
+          },
+          "sadhana_score": {
+            "type": "integer",
+            "title": "Sadhana Score"
+          },
+          "sadhana_max_score": {
+            "type": "integer",
+            "title": "Sadhana Max Score"
+          },
+          "sadhana_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sadhana Percentage"
+          },
+          "academic_score": {
+            "type": "integer",
+            "title": "Academic Score"
+          },
+          "academic_max_score": {
+            "type": "integer",
+            "title": "Academic Max Score"
+          },
+          "academic_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Percentage"
+          },
+          "sadhana_change_percentage_points": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sadhana Change Percentage Points"
+          },
+          "academic_change_percentage_points": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Change Percentage Points"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period_start_date",
+          "period_end_date",
+          "sadhana_score",
+          "sadhana_max_score",
+          "academic_score",
+          "academic_max_score"
+        ],
+        "title": "PreviousFourWeekSummaryPublic"
+      },
+      "PreviousWeekActivityPublic": {
+        "properties": {
+          "week_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week Start Date"
+          },
+          "raw_total": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Total"
+          },
+          "final_activity_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Activity Score"
+          },
+          "maximum_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Score"
+          },
+          "standard_achievement": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Achievement"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_start_date"
+        ],
+        "title": "PreviousWeekActivityPublic"
+      },
+      "PreviousWeekEvaluationPublic": {
+        "properties": {
+          "week_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week Start Date"
+          },
+          "week_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week End Date"
+          },
+          "sadhana_score": {
+            "type": "integer",
+            "title": "Sadhana Score"
+          },
+          "sadhana_max_score": {
+            "type": "integer",
+            "title": "Sadhana Max Score"
+          },
+          "sadhana_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sadhana Percentage"
+          },
+          "academic_score": {
+            "type": "integer",
+            "title": "Academic Score"
+          },
+          "academic_max_score": {
+            "type": "integer",
+            "title": "Academic Max Score"
+          },
+          "academic_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Percentage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_start_date",
+          "week_end_date",
+          "sadhana_score",
+          "sadhana_max_score",
+          "academic_score",
+          "academic_max_score"
+        ],
+        "title": "PreviousWeekEvaluationPublic"
+      },
+      "RegistrationRequest": {
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Full Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          },
+          "phone_number": {
+            "type": "string",
+            "maxLength": 30,
+            "minLength": 7,
+            "title": "Phone Number"
+          },
+          "college": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "College"
+          },
+          "branch": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 2,
+            "title": "Branch"
+          },
+          "current_academic_year": {
+            "type": "integer",
+            "maximum": 4.0,
+            "minimum": 1.0,
+            "title": "Current Academic Year"
+          },
+          "college_joining_year": {
+            "type": "integer",
+            "maximum": 2100.0,
+            "minimum": 2000.0,
+            "title": "College Joining Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "full_name",
+          "email",
+          "password",
+          "phone_number",
+          "college",
+          "branch",
+          "current_academic_year",
+          "college_joining_year"
+        ],
+        "title": "RegistrationRequest"
+      },
+      "RegistrationResponse": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "account_status": {
+            "$ref": "#/components/schemas/AccountStatus"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "email",
+          "account_status",
+          "message"
+        ],
+        "title": "RegistrationResponse"
+      },
+      "RegistrationSource": {
+        "type": "string",
+        "enum": [
+          "SELF_REGISTERED",
+          "ADMIN_CREATED"
+        ],
+        "title": "RegistrationSource"
+      },
+      "RejectionRequest": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "title": "RejectionRequest"
+      },
+      "RoundingMode": {
+        "type": "string",
+        "enum": [
+          "HALF_UP"
+        ],
+        "title": "RoundingMode"
+      },
+      "RuleType": {
+        "type": "string",
+        "enum": [
+          "BOOLEAN",
+          "THRESHOLD",
+          "PERCENTAGE",
+          "SYSTEM_DERIVED",
+          "NO_SCORE"
+        ],
+        "title": "RuleType"
+      },
+      "SahadevaReviewItem": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "full_name": {
+            "type": "string",
+            "title": "Full Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "due_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Due Week"
+          },
+          "review_due": {
+            "type": "boolean",
+            "title": "Review Due"
+          },
+          "pending_decision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "CONTINUE_TO_NAKULA",
+                  "DEACTIVATE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Decision"
+          },
+          "pending_effective_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending Effective Week"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "full_name",
+          "email",
+          "due_week",
+          "review_due",
+          "pending_decision",
+          "pending_effective_week"
+        ],
+        "title": "SahadevaReviewItem"
+      },
+      "SahadevaReviewRequest": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "CONTINUE_TO_NAKULA",
+              "DEACTIVATE"
+            ],
+            "title": "Decision"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "title": "SahadevaReviewRequest"
+      },
+      "SahadevaReviewResult": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "CONTINUE_TO_NAKULA",
+              "DEACTIVATE"
+            ],
+            "title": "Decision"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "scheduled_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scheduled At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "decision",
+          "effective_from_week",
+          "scheduled_at"
+        ],
+        "title": "SahadevaReviewResult"
+      },
+      "ScoringRuleCreateRequest": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Name"
+          },
+          "rule_type": {
+            "$ref": "#/components/schemas/RuleType"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "name",
+          "rule_type"
+        ],
+        "title": "ScoringRuleCreateRequest"
+      },
+      "ScoringRulePublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "rule_type": {
+            "$ref": "#/components/schemas/RuleType"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_archived": {
+            "type": "boolean",
+            "title": "Is Archived"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "activity_id",
+          "name",
+          "rule_type",
+          "is_active",
+          "is_archived",
+          "created_by_id"
+        ],
+        "title": "ScoringRulePublic"
+      },
+      "ScoringRuleUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ScoringRuleUpdateRequest"
+      },
+      "ScoringRuleVersionCreateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "max_score": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Max Score"
+          },
+          "rounding_mode": {
+            "$ref": "#/components/schemas/RoundingMode",
+            "default": "HALF_UP"
+          },
+          "configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Configuration"
+          }
+        },
+        "type": "object",
+        "required": [
+          "max_score",
+          "configuration"
+        ],
+        "title": "ScoringRuleVersionCreateRequest"
+      },
+      "ScoringRuleVersionPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "scoring_rule_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Scoring Rule Id"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VersionStatus"
+          },
+          "max_score": {
+            "type": "integer",
+            "title": "Max Score"
+          },
+          "rounding_mode": {
+            "$ref": "#/components/schemas/RoundingMode"
+          },
+          "configuration": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Configuration"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "scoring_rule_id",
+          "version_number",
+          "effective_from_week",
+          "status",
+          "max_score",
+          "rounding_mode",
+          "configuration",
+          "created_by_id",
+          "created_at"
+        ],
+        "title": "ScoringRuleVersionPublic"
+      },
+      "ScoringRuleVersionUpdateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "max_score": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Score"
+          },
+          "rounding_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoundingMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "configuration": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configuration"
+          }
+        },
+        "type": "object",
+        "title": "ScoringRuleVersionUpdateRequest"
+      },
+      "ScoringType": {
+        "type": "string",
+        "enum": [
+          "DAILY",
+          "WEEKLY_AGGREGATED",
+          "NON_SCORED",
+          "SYSTEM_DERIVED"
+        ],
+        "title": "ScoringType"
+      },
+      "StandardCreateRequest": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "name"
+        ],
+        "title": "StandardCreateRequest"
+      },
+      "StandardPeriod": {
+        "type": "string",
+        "enum": [
+          "DAILY",
+          "WEEKLY"
+        ],
+        "title": "StandardPeriod"
+      },
+      "StandardPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "is_archived": {
+            "type": "boolean",
+            "title": "Is Archived"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "activity_id",
+          "name",
+          "is_active",
+          "is_archived",
+          "created_by_id"
+        ],
+        "title": "StandardPublic"
+      },
+      "StandardUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "StandardUpdateRequest"
+      },
+      "StandardVersionCreateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "period": {
+            "$ref": "#/components/schemas/StandardPeriod"
+          },
+          "target_definition": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Target Definition"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period",
+          "target_definition"
+        ],
+        "title": "StandardVersionCreateRequest"
+      },
+      "StandardVersionPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "standard_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Standard Id"
+          },
+          "version_number": {
+            "type": "integer",
+            "title": "Version Number"
+          },
+          "effective_from_week": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective From Week"
+          },
+          "period": {
+            "$ref": "#/components/schemas/StandardPeriod"
+          },
+          "target_definition": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Target Definition"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VersionStatus"
+          },
+          "created_by_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Created By Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "standard_id",
+          "version_number",
+          "effective_from_week",
+          "period",
+          "target_definition",
+          "status",
+          "created_by_id",
+          "created_at"
+        ],
+        "title": "StandardVersionPublic"
+      },
+      "StandardVersionUpdateRequest": {
+        "properties": {
+          "effective_from_week": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective From Week"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StandardPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "target_definition": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Definition"
+          }
+        },
+        "type": "object",
+        "title": "StandardVersionUpdateRequest"
+      },
+      "UserPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "full_name": {
+            "type": "string",
+            "title": "Full Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "phone_number": {
+            "type": "string",
+            "title": "Phone Number"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "account_status": {
+            "$ref": "#/components/schemas/AccountStatus"
+          },
+          "registration_source": {
+            "$ref": "#/components/schemas/RegistrationSource"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved At"
+          },
+          "deactivated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deactivated At"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "devotee_profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DevoteeProfilePublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "full_name",
+          "email",
+          "phone_number",
+          "role",
+          "account_status",
+          "registration_source",
+          "approved_at",
+          "deactivated_at",
+          "created_at",
+          "devotee_profile"
+        ],
+        "title": "UserPublic"
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": [
+          "DEVOTEE",
+          "ADMIN"
+        ],
+        "title": "UserRole"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VersionStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "ACTIVE",
+          "ARCHIVED"
+        ],
+        "title": "VersionStatus"
+      },
+      "WeeklyActivityResultPublic": {
+        "properties": {
+          "activity_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Activity Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ActivityCategory"
+          },
+          "scoring_type": {
+            "$ref": "#/components/schemas/ScoringType"
+          },
+          "aggregation_method": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AggregationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "raw_total": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Total"
+          },
+          "daily_score_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Score Total"
+          },
+          "final_activity_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Activity Score"
+          },
+          "maximum_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Score"
+          },
+          "rule_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Version Id"
+          },
+          "standard_version_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Version Id"
+          },
+          "standard_snapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Snapshot"
+          },
+          "standard_achievement": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard Achievement"
+          },
+          "calculation_details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Details"
+          },
+          "previous_week": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviousWeekActivityPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "activity_id",
+          "code",
+          "name",
+          "category",
+          "scoring_type"
+        ],
+        "title": "WeeklyActivityResultPublic"
+      },
+      "WeeklyEvaluationPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "week_start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week Start Date"
+          },
+          "week_end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Week End Date"
+          },
+          "category_code": {
+            "type": "string",
+            "title": "Category Code"
+          },
+          "category_name": {
+            "type": "string",
+            "title": "Category Name"
+          },
+          "timezone_snapshot": {
+            "type": "string",
+            "title": "Timezone Snapshot"
+          },
+          "sadhana_score": {
+            "type": "integer",
+            "title": "Sadhana Score"
+          },
+          "sadhana_max_score": {
+            "type": "integer",
+            "title": "Sadhana Max Score"
+          },
+          "sadhana_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sadhana Percentage"
+          },
+          "academic_score": {
+            "type": "integer",
+            "title": "Academic Score"
+          },
+          "academic_max_score": {
+            "type": "integer",
+            "title": "Academic Max Score"
+          },
+          "academic_percentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Academic Percentage"
+          },
+          "revision_number": {
+            "type": "integer",
+            "title": "Revision Number"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "activities": {
+            "items": {
+              "$ref": "#/components/schemas/WeeklyActivityResultPublic"
+            },
+            "type": "array",
+            "title": "Activities"
+          },
+          "previous_week": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviousWeekEvaluationPublic"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "week_start_date",
+          "week_end_date",
+          "category_code",
+          "category_name",
+          "timezone_snapshot",
+          "sadhana_score",
+          "sadhana_max_score",
+          "academic_score",
+          "academic_max_score",
+          "revision_number",
+          "generated_at",
+          "updated_at"
+        ],
+        "title": "WeeklyEvaluationPublic"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

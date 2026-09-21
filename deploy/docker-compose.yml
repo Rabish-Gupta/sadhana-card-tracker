@@ -1,0 +1,88 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sadhana_tracker}
+      POSTGRES_USER: ${POSTGRES_USER:-sadhana}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.production}
+    volumes:
+      - sadhana_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sadhana} -d ${POSTGRES_DB:-sadhana_tracker}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: deploy/backend.Dockerfile
+    environment: &backend_env
+      APP_NAME: Sadhana Card Tracker API
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-sadhana}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-sadhana_tracker}
+      SQL_ECHO: "false"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env.production}
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      DEFAULT_ORGANIZATION_CODE: ${DEFAULT_ORGANIZATION_CODE:-VOICE}
+      SCHEDULER_ENABLED: "false"
+      SCHEDULER_RUN_ON_STARTUP: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/backend.Dockerfile
+    restart: unless-stopped
+    environment:
+      <<: *backend_env
+      SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-true}
+      SCHEDULER_INTERVAL_SECONDS: ${SCHEDULER_INTERVAL_SECONDS:-60}
+      SCHEDULER_RUN_ON_STARTUP: ${SCHEDULER_RUN_ON_STARTUP:-true}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deploy/frontend.Dockerfile
+      args:
+        NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Sadhana Card Tracker}
+        NEXT_PUBLIC_APP_VERSION: "0.4.0"
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      BACKEND_BASE_URL: http://backend:8000
+      BACKEND_REQUEST_TIMEOUT_MS: ${BACKEND_REQUEST_TIMEOUT_MS:-15000}
+      BFF_MAX_BODY_BYTES: ${BFF_MAX_BODY_BYTES:-1048576}
+      NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Sadhana Card Tracker}
+      NEXT_PUBLIC_APP_VERSION: "0.4.0"
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/readiness').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+volumes:
+  sadhana_postgres_data:

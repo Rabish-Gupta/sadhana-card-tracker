@@ -1,0 +1,40 @@
+{
+  "name": "sadhana-card-tracker-frontend",
+  "version": "0.4.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "contract": "node scripts/verify-contract.mjs",
+    "contract:refresh": "node scripts/refresh-openapi.mjs",
+    "check": "npm run contract && npm run audit && npm run typecheck && npm run lint",
+    "smoke": "node scripts/frontend_smoke_test.mjs",
+    "smoke:devotee": "node scripts/devotee_frontend_smoke_test.mjs",
+    "audit": "node scripts/source_audit.mjs",
+    "verify": "npm run check && npm run build",
+    "smoke:full": "node scripts/full_frontend_smoke_suite.mjs",
+    "smoke:admin": "node scripts/admin_frontend_smoke_test.mjs",
+    "smoke:production": "node scripts/production_integration_smoke_test.mjs",
+    "release:check": "npm run verify && npm run smoke:production",
+    "contract:live": "node scripts/verify-live-contract.mjs"
+  },
+  "dependencies": {
+    "next": "15.5.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "@types/react": "19.1.2",
+    "@types/react-dom": "19.1.2",
+    "autoprefixer": "10.4.21",
+    "eslint": "9.25.1",
+    "eslint-config-next": "15.5.2",
+    "postcss": "8.5.3",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.8.3"
+  }
+}
